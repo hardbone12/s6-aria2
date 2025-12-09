@@ -53,7 +53,7 @@ jobs:
           docker rm aria2-extract
 
       - name: Upload aria2 binary
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: aria2-${{ steps.platform.outputs.name }}
           path: ./aria2-output/aria2c

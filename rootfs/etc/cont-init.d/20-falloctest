@@ -1,0 +1,26 @@
+#!/usr/bin/with-contenv bash
+
+. /etc/init-base
+
+FILE_ALLOCATION_SET() {
+
+    if [[ ! -f "${ARIA2_CONF}" ]]; then
+        TMP_FILE="${DOWNLOAD_DIR}/falloc.test"
+        if fallocate -l 5M "${TMP_FILE}" 2>/dev/null; then
+            FILE_ALLOCATION=falloc
+        else
+            FILE_ALLOCATION=none
+        fi
+        rm -f "${TMP_FILE}"
+        sed -i "s@^\(file-allocation=\).*@\1${FILE_ALLOCATION}@" "${ARIA2_CONF}"
+        echo -e "${INFO} File allocation method set to ${FILE_ALLOCATION}."
+    else
+        echo -e "${INFO} Configuration already exists, skipping Detecting file allocation method..."
+    fi
+}
+
+echo -e "${INFO} ${0##*/} Detecting file allocation method..."
+
+FILE_ALLOCATION_SET
+
+exit 0

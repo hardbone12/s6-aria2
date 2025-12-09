@@ -1,0 +1,3 @@
+#!/bin/sh
+
+echo -e "${INFO} ${0##*/} First initialization completed!"

@@ -1,0 +1,28 @@
+#!/usr/bin/with-contenv bash
+
+. /etc/init-base
+
+DISABLE_TRACKER_UPDATE() {
+    touch /etc/services.d/crond/tracker_update.disabled
+    echo -e "${INFO} Tracker update disabled."
+}
+
+UPDATE_TRACKERS() {
+    [[ "${UPDATE_TRACKERS}" ]] && {
+        LOWER_UPDATE_TRACKERS=$(echo "${UPDATE_TRACKERS}" | tr '[:upper:]' '[:lower:]')
+        if [[ "${LOWER_UPDATE_TRACKERS}" = "true" || "${LOWER_UPDATE_TRACKERS}" = "enable" ]]; then
+            rm -f /etc/services.d/crond/tracker_update.disabled
+            echo -e "${INFO} Tracker update enabled."
+        else
+            DISABLE_TRACKER_UPDATE
+        fi
+    } || {
+        DISABLE_TRACKER_UPDATE
+    }
+}
+echo -e "${INFO} ${0##*/} Setting update BT trackers job..."
+
+UPDATE_TRACKERS
+
+echo -e "${INFO} Set BT trackers job completed."
+exit 0

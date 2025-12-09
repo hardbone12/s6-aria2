@@ -1,0 +1,94 @@
+FROM ubuntu:22.04
+
+#RUN sed -ie 's/archive\.ubuntu/cn.archive.ubuntu/g' /etc/apt/sources.list
+
+RUN apt-get update && \
+    DEBIAN_FRONTEND="noninteractive" \
+    apt-get install -y --no-install-recommends \
+        make binutils autoconf automake autotools-dev libtool \
+        patch ca-certificates \
+        pkg-config git curl dpkg-dev gcc g++\
+        autopoint libcppunit-dev libssl-dev libxml2-dev lzip \
+        python3-docutils
+
+RUN curl -L -O https://github.com/libexpat/libexpat/releases/download/R_2_5_0/expat-2.5.0.tar.bz2 && \
+    curl -L -O https://www.sqlite.org/2023/sqlite-autoconf-3430100.tar.gz && \
+    curl -L -O https://github.com/madler/zlib/releases/download/v1.3.1/zlib-1.3.1.tar.gz && \
+    curl -L -O https://github.com/c-ares/c-ares/releases/download/cares-1_19_1/c-ares-1.19.1.tar.gz && \
+    curl -L -O https://libssh2.org/download/libssh2-1.11.0.tar.bz2
+
+RUN tar xf expat-2.5.0.tar.bz2 && \
+    cd expat-2.5.0 && \
+    ./configure \
+        --disable-shared \
+        --enable-static \
+        --prefix=/tmp/deps \
+        --build=`dpkg-architecture -qDEB_BUILD_GNU_TYPE` && \
+    make -j$(nproc) install
+
+RUN tar xf sqlite-autoconf-3430100.tar.gz && \
+    cd sqlite-autoconf-3430100 && \
+    ./configure \
+        --disable-shared \
+        --enable-static \
+        --prefix=/tmp/deps \
+        --build=`dpkg-architecture -qDEB_BUILD_GNU_TYPE` && \
+    make -j$(nproc) install
+
+RUN tar xf zlib-1.3.1.tar.gz && \
+    cd zlib-1.3.1 && \
+    ./configure \
+        --prefix=/tmp/deps \
+        --libdir=/tmp/deps/lib \
+        --includedir=/tmp/deps/include \
+        --static && \
+    make -j$(nproc) install
+
+RUN tar xf c-ares-1.19.1.tar.gz && \
+    cd c-ares-1.19.1 && \
+    ./configure \
+        --disable-shared \
+        --disable-tests \
+        --enable-static \
+        --without-random \
+        --prefix=/tmp/deps \
+        --build=`dpkg-architecture -qDEB_BUILD_GNU_TYPE` && \
+    make -j$(nproc) install
+
+RUN tar xf libssh2-1.11.0.tar.bz2 && \
+    cd libssh2-1.11.0 && \
+    ./configure \
+        --disable-shared \
+        --enable-static \
+        --prefix=/tmp/deps \
+        --build=`dpkg-architecture -qDEB_BUILD_GNU_TYPE` && \
+    make -j$(nproc) install
+
+ARG ARIA2_VERSION=1.37.0
+
+RUN curl -L -O https://github.com/aria2/aria2/releases/download/release-${ARIA2_VERSION}/aria2-${ARIA2_VERSION}.tar.gz && \
+    tar xf aria2-${ARIA2_VERSION}.tar.gz && \
+    cd aria2-${ARIA2_VERSION} && \
+    ./configure \
+        --prefix=/usr \
+        --without-included-gettext \
+        --disable-nls \
+        --with-libcares \
+        --without-gnutls \
+        --with-openssl \
+        --with-sqlite3 \
+        --without-libxml2 \
+        --with-libexpat \
+        --with-libz \
+        --without-libgmp \
+        --with-libssh2 \
+        --without-libgcrypt \
+        --without-libnettle \
+        ARIA2_STATIC=yes \
+        CPPFLAGS="-I/tmp/deps/include" \
+        LDFLAGS="-L/tmp/deps/lib" \
+        PKG_CONFIG="/usr/bin/pkg-config" \
+        PKG_CONFIG_PATH="/tmp/deps/lib/pkgconfig" && \
+    make -j$(nproc) && \
+    strip src/aria2c && \
+    make install DESTDIR=/output

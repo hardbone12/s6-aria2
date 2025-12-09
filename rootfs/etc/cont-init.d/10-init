@@ -1,0 +1,25 @@
+#!/usr/bin/with-contenv bash
+
+. /etc/init-base
+
+INIT_CONFIG() {
+    mkdir -p "${ARIA2_CONF_DIR}" "${SCRIPT_DIR}" "${DOWNLOAD_DIR}"
+    
+    if [[ ! -f "${ARIA2_CONF}" ]]; then
+        cp -r "${CONFIG_TEMPLATE_DIR}/"* "${ARIA2_CONF_DIR}/"
+        
+        touch "${ARIA2_CONF_DIR}/aria2.session"
+        
+        echo -e "${INFO} Configuration initialized."
+    else
+        echo -e "${INFO} Configuration already exists, skipping initialization."
+    fi
+}
+
+echo -e "${INFO} ${0##*/} Initializing configuration from template..."
+
+INIT_CONFIG
+
+echo -e "${INFO} Initialization completed."
+
+exit 0

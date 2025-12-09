@@ -1,0 +1,36 @@
+#!/usr/bin/with-contenv bash
+
+. /etc/init-base
+
+SET_PERMISSIONS() {
+    if [ -w "${DOWNLOAD_DIR}" ]; then
+        echo -e "${INFO} Download directory is writable."
+    else
+        chown -R 65534:65534 "${DOWNLOAD_DIR}"
+    fi
+    
+    chown -R 65534:65534 "${ARIA2_CONF_DIR}"
+    
+    if [[ -z ${PUID} && -z ${PGID} ]] || [[ ${PUID} = 65534 && ${PGID} = 65534 ]]; then
+        echo -e "${WARN} Using permissive permissions (755)."
+        chmod -v 755 "${DOWNLOAD_DIR}"
+        chmod -vR 755 "${ARIA2_CONF_DIR}"
+    else
+        if [ -w "${DOWNLOAD_DIR}" ]; then
+            echo -e "${INFO} Download directory permissions unchanged."
+        else
+            chmod -v u=rwx "${DOWNLOAD_DIR}"
+        fi
+        chmod -v 600 "${ARIA2_CONF_DIR}"/*
+        chmod -v 755 "${SCRIPT_DIR}"
+        chmod -v 700 "${SCRIPT_DIR}"/*
+    fi
+}
+
+echo -e "${INFO} ${0##*/} Setting permissions..."
+
+SET_PERMISSIONS
+
+echo -e "${INFO} Set permissions completed."
+
+exit 0

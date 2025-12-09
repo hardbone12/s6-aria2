@@ -1,0 +1,13 @@
+FROM alpine:3.23
+
+ARG ARIANG_VERSION=1.3.11
+
+RUN apk add --no-cache darkhttpd curl unzip && \
+    curl -fsSL "https://github.com/mayswind/AriaNg/releases/download/${ARIANG_VERSION}/AriaNg-${ARIANG_VERSION}.zip" -o /tmp/ariang.zip && \
+    unzip /tmp/ariang.zip -d /www && \
+    apk del curl unzip && \
+    rm -rf /var/cache/apk/* && rm -rf /tmp/*
+
+EXPOSE 6880
+
+CMD ["darkhttpd", "/www", "--port", "6880"]

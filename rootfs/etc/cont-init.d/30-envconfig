@@ -1,0 +1,49 @@
+#!/usr/bin/with-contenv bash
+
+. /etc/init-base
+
+APPLY_ENV_CONFIG() {
+    [[ ${RPC_PORT} ]] && {
+        echo -e "${INFO} Applying RPC_PORT=${RPC_PORT}..."
+        sed -i "s@^\(rpc-listen-port=\).*@\1${RPC_PORT}@" "${ARIA2_CONF}"
+    }
+
+    [[ ${LISTEN_PORT} ]] && {
+        echo -e "${INFO} Applying LISTEN_PORT=${LISTEN_PORT}..."
+        sed -i "s@^\(listen-port=\).*@\1${LISTEN_PORT}@" "${ARIA2_CONF}"
+        sed -i "s@^\(dht-listen-port=\).*@\1${LISTEN_PORT}@" "${ARIA2_CONF}"
+    }
+
+    [[ ${RPC_SECRET} ]] && {
+        echo -e "${INFO} Applying RPC_SECRET=${RPC_SECRET}..."
+        sed -i "s@^\(rpc-secret=\).*@\1${RPC_SECRET}@" "${ARIA2_CONF}"
+    }
+
+    [[ ${DISK_CACHE} ]] && {
+        echo -e "${INFO} Applying DISK_CACHE=${DISK_CACHE}..."
+        sed -i "s@^\(disk-cache=\).*@\1${DISK_CACHE}@" "${ARIA2_CONF}"
+    }
+
+    [[ "${IPV6_MODE}" = "true" || "${IPV6_MODE}" = "enable" ]] && {
+        echo -e "${INFO} Applying IPV6_MODE=${IPV6_MODE}..."
+        sed -i "s@^\(disable-ipv6=\).*@\1false@" "${ARIA2_CONF}"
+        sed -i "s@^\(enable-dht6=\).*@\1true@" "${ARIA2_CONF}"
+    }
+
+    [[ "${IPV6_MODE}" = "false" || "${IPV6_MODE}" = "disable" ]] && {
+        echo -e "${INFO} Applying IPV6_MODE=${IPV6_MODE}..."
+        sed -i "s@^\(disable-ipv6=\).*@\1true@" "${ARIA2_CONF}"
+        sed -i "s@^\(enable-dht6=\).*@\1false@" "${ARIA2_CONF}"
+    }
+}
+
+echo -e "${INFO} ${0##*/} Applying environment variables to configuration files..."
+echo -e "${INFO} Note: This script will override the default configuration files with the environment variables."
+echo ""
+
+APPLY_ENV_CONFIG
+
+echo -e "${INFO} Environment variables applied to configuration files."
+echo ""
+
+exit 0

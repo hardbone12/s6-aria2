@@ -34,7 +34,7 @@ jobs:
           echo "name=${PLATFORM//\//-}" >> $GITHUB_OUTPUT
 
       - name: Build aria2-builder
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfile-aria2-builder
@@ -91,7 +91,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and Push s6-aria2 (multi-arch)
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfile

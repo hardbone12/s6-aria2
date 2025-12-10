@@ -3,4 +3,5 @@
 umask ${UMASK_SET:-022}
 
 exec s6-setuidgid nobody aria2c \
-    --conf-path=/config/aria2.conf
+    --conf-path=/config/aria2.conf \
+    --ca-certificate=/etc/ssl/certs/ca-certificates.crt

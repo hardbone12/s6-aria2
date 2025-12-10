@@ -39,7 +39,6 @@ services:
   ariaNg:
     container_name: ariaNg
     image: hardbone12/ariang
-    command: ["darkhttpd", "--port", "6880", "--ipv6"]
     network_mode: host
 #    network_mode: bridge
 #    ports:

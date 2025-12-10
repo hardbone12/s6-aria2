@@ -36,7 +36,7 @@ jobs:
           docker rm aria2-extract
 
       - name: Upload aria2 binary (amd64)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: aria2-linux-amd64
           path: ./aria2-bin/linux/amd64/aria2c
@@ -70,7 +70,7 @@ jobs:
           docker rm aria2-extract
 
       - name: Upload aria2 binary (arm64)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: aria2-linux-arm64
           path: ./aria2-bin/linux/arm64/aria2c

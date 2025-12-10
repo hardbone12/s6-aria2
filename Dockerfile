@@ -3,6 +3,8 @@ ARG TARGETARCH
 
 FROM ${S6_ALPINE_IMAGE}
 
+ARG TARGETARCH
+
 COPY aria2-bin/linux/${TARGETARCH}/aria2c /usr/bin/aria2c
 RUN chmod +x /usr/bin/aria2c
 

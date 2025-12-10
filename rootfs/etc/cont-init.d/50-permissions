@@ -1,6 +1,6 @@
 #!/usr/bin/with-contenv bash
 
-. /etc/init-base
+. /etc/env-base
 
 SET_PERMISSIONS() {
     if [ -w "${DOWNLOAD_DIR}" ]; then

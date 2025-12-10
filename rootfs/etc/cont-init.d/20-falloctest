@@ -1,6 +1,6 @@
 #!/usr/bin/with-contenv bash
 
-. /etc/init-base
+. /etc/env-base
 
 FILE_ALLOCATION_SET() {
 

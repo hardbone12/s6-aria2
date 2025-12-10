@@ -1,6 +1,6 @@
 #!/usr/bin/with-contenv bash
 
-. /etc/init-base
+. /etc/env-base
 
 INIT_CONFIG() {
     mkdir -p "${ARIA2_CONF_DIR}" "${SCRIPT_DIR}" "${DOWNLOAD_DIR}"

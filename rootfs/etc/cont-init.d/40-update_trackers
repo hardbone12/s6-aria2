@@ -1,6 +1,6 @@
 #!/usr/bin/with-contenv bash
 
-. /etc/init-base
+. /etc/env-base
 
 DISABLE_TRACKER_UPDATE() {
     touch /etc/services.d/crond/tracker_update.disabled

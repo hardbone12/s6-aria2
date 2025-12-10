@@ -35,7 +35,7 @@ services:
     environment:
       - RPC_SECRET=your_password
       - RPC_PORT=6800
-      - LISTEN_PORT=6888
+      - LISTEN_PORT=43318
       - UPDATE_TRACKERS=true
     volumes:
       - ./config:/config
@@ -49,7 +49,7 @@ services:
 |------|--------|------|
 | `RPC_SECRET` | (空) | RPC 访问密钥 |
 | `RPC_PORT` | 6800 | RPC 监听端口 |
-| `LISTEN_PORT` | 6888 | BT 监听端口 |
+| `LISTEN_PORT` | 43318 | BT 监听端口 |
 | `DISK_CACHE` | (空) | 磁盘缓存大小，如 `64M` |
 | `UPDATE_TRACKERS` | true | 是否自动更新 Tracker |
 | `CUSTOM_TRACKER_URL` | (空) | 自定义 Tracker 源 URL（追加到默认源） |

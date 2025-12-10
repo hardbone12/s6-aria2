@@ -1,6 +1,6 @@
 #!/usr/bin/with-contenv bash
 
-. /etc/init-base
+. /etc/env-base
 
 APPLY_ENV_CONFIG() {
     [[ ${RPC_PORT} ]] && {
@@ -39,11 +39,9 @@ APPLY_ENV_CONFIG() {
 
 echo -e "${INFO} ${0##*/} Applying environment variables to configuration files..."
 echo -e "${INFO} Note: This script will override the default configuration files with the environment variables."
-echo ""
 
 APPLY_ENV_CONFIG
 
 echo -e "${INFO} Environment variables applied to configuration files."
-echo ""
 
 exit 0

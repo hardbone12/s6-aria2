@@ -37,7 +37,7 @@ services:
     environment:
       - RPC_SECRET=your_password
       - RPC_PORT=6800
-      - LISTEN_PORT=6888
+      - LISTEN_PORT=43318
       - UPDATE_TRACKERS=true
     volumes:
       - ./config:/config
@@ -51,7 +51,7 @@ services:
 |----------|---------|-------------|
 | `RPC_SECRET` | (empty) | RPC access token |
 | `RPC_PORT` | 6800 | RPC listen port |
-| `LISTEN_PORT` | 6888 | BT listen port |
+| `LISTEN_PORT` | 43318 | BT listen port |
 | `DISK_CACHE` | (empty) | Disk cache size, e.g., `64M` |
 | `UPDATE_TRACKERS` | true | Auto-update BT trackers |
 | `CUSTOM_TRACKER_URL` | (empty) | Custom tracker source URLs (appended to defaults) |
